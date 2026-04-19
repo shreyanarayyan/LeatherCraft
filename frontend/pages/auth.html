@@ -69,69 +69,60 @@
     background: linear-gradient(135deg, #543b36 0%, #6e524d 100%);
   }
 
-  /* ── Floating label animation ── */
-  input:focus + label,
-  input:not(:placeholder-shown) + label {
-    transform: translateY(-1.5rem) scale(0.85);
+  /* ── Input base: left padding so text & label share same indent ── */
+  .auth-input {
+    padding-left: 0.75rem;
+  }
+
+  /* ── Floating label: start indented, vertically centred in the input ── */
+  .field-label {
+    left: 0.75rem;           /* matches input padding-left */
+    top: 50%;
+    transform: translateY(-50%);
+    transition: top 0.2s ease, transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+    transform-origin: left center;
+  }
+
+  /* ── Floated state: sits right on the bottom border line ── */
+  input:focus + .field-label,
+  input:not(:placeholder-shown) + .field-label {
+    top: 100%;               /* aligns the label's top edge to the border */
+    transform: translateY(-50%) scale(0.78);   /* centres it on the line */
     color: #8c4f10;
   }
-  .dark input:focus + label,
-  .dark input:not(:placeholder-shown) + label {
+  .dark input:focus + .field-label,
+  .dark input:not(:placeholder-shown) + .field-label {
     color: #ffb77b;
   }
 
-  /* ── FIX: Input text & placeholder visible in dark mode ── */
+  /* ── Dark mode input text ── */
   .dark input,
   .dark select {
     color: #e4e2e1 !important;
     background-color: transparent !important;
     caret-color: #ffb77b;
   }
-  /* placeholder-shown but actual placeholder text (the " " space trick keeps label up) */
   .dark input::placeholder {
     color: rgba(176, 151, 141, 0.4);
   }
-  /* The floating label itself in dark */
   .dark .field-label {
     color: rgba(176, 151, 141, 0.55);
   }
 
   /* ── Role tab active indicator ── */
-  .role-tab {
-    transition: all 0.2s ease;
-  }
-  .role-tab.active {
-    background-color: #543b36;
-    color: #ffffff;
-  }
-  .dark .role-tab.active {
-    background-color: #8c4f10;
-    color: #ffffff;
-  }
-  .role-tab:not(.active) {
-    background-color: transparent;
-    color: #54433a;
-  }
-  .dark .role-tab:not(.active) {
-    color: rgba(176, 151, 141, 0.7);
-  }
+  .role-tab { transition: all 0.2s ease; }
+  .role-tab.active { background-color: #543b36; color: #ffffff; }
+  .dark .role-tab.active { background-color: #8c4f10; color: #ffffff; }
+  .role-tab:not(.active) { background-color: transparent; color: #54433a; }
+  .dark .role-tab:not(.active) { color: rgba(176, 151, 141, 0.7); }
 
   /* Border on focused input in dark */
-  .dark .auth-input:focus {
-    border-color: #ffb77b !important;
-  }
+  .dark .auth-input:focus { border-color: #ffb77b !important; }
 
-  /* Hero panel */
   .hero-panel {
     background: linear-gradient(160deg, #3a2720 0%, #543b36 50%, #6e524d 100%);
   }
 
-  /* Smooth form transitions */
-  #formFields > div {
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-
-  /* Page fade in */
   main { animation: fadeIn 0.4s ease both; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
@@ -166,7 +157,6 @@
         </p>
         <div class="h-px w-20 bg-[#8c4f10]"></div>
       </div>
-      <!-- Feature pills -->
       <div class="space-y-3 pt-4">
         <div class="flex items-center gap-3 text-[#ecc7c0]/60 text-sm">
           <span class="material-symbols-outlined text-[#8c4f10]" style="font-variation-settings:'FILL' 1;">architecture</span>
@@ -214,43 +204,43 @@
 
         <div id="formFields" class="space-y-7">
 
-          <!-- Name field (register only, hidden by default) -->
-          <div id="nameFieldWrapper" class="relative group hidden">
+          <!-- Name field (register only) -->
+          <div id="nameFieldWrapper" class="relative group hidden pb-3">
             <input
               id="artisan-name"
               type="text"
               placeholder=" "
-              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 px-0 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
+              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
             />
-            <label for="artisan-name" class="field-label absolute left-0 top-4 pointer-events-none transition-all origin-left font-label text-sm uppercase tracking-wider">
+            <label for="artisan-name" class="field-label absolute pointer-events-none font-label text-sm uppercase tracking-wider text-[#54433a]/60 dark:text-[#a89388]/55">
               Full Name
             </label>
           </div>
 
           <!-- Email field -->
-          <div class="relative group">
+          <div class="relative group pb-3">
             <input
               id="artisan-id"
               type="email"
               placeholder=" "
               required
-              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 px-0 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
+              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
             />
-            <label for="artisan-id" class="field-label absolute left-0 top-4 pointer-events-none transition-all origin-left font-label text-sm uppercase tracking-wider">
+            <label for="artisan-id" class="field-label absolute pointer-events-none font-label text-sm uppercase tracking-wider text-[#54433a]/60 dark:text-[#a89388]/55">
               Email Address
             </label>
           </div>
 
           <!-- Password field -->
-          <div class="relative group">
+          <div class="relative group pb-3">
             <input
               id="password"
               type="password"
               placeholder=" "
               required
-              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 px-0 pr-10 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
+              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 pr-10 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
             />
-            <label for="password" class="field-label absolute left-0 top-4 pointer-events-none transition-all origin-left font-label text-sm uppercase tracking-wider">
+            <label for="password" class="field-label absolute pointer-events-none font-label text-sm uppercase tracking-wider text-[#54433a]/60 dark:text-[#a89388]/55">
               Password
             </label>
             <button id="togglePassword" type="button" class="absolute right-0 top-4 text-[#54433a]/40 dark:text-[#a89388]/40 hover:text-[#8c4f10] dark:hover:text-[#ffb77b] transition-colors">
@@ -259,14 +249,14 @@
           </div>
 
           <!-- Confirm Password (register only) -->
-          <div id="confirmPasswordWrapper" class="relative group hidden">
+          <div id="confirmPasswordWrapper" class="relative group hidden pb-3">
             <input
               id="confirm-password"
               type="password"
               placeholder=" "
-              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 px-0 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
+              class="auth-input peer w-full bg-[#f6f3f2] dark:bg-[#1f1c1b] border-b-2 border-[#dac2b6] dark:border-[#3a2f2b] py-4 text-[#1b1c1c] dark:text-[#e4e2e1] focus:outline-none focus:border-[#8c4f10] dark:focus:border-[#ffb77b] transition-all font-body text-base"
             />
-            <label for="confirm-password" class="field-label absolute left-0 top-4 pointer-events-none transition-all origin-left font-label text-sm uppercase tracking-wider">
+            <label for="confirm-password" class="field-label absolute pointer-events-none font-label text-sm uppercase tracking-wider text-[#54433a]/60 dark:text-[#a89388]/55">
               Confirm Password
             </label>
           </div>
@@ -302,7 +292,6 @@
       <div class="pt-4 border-t border-[#dac2b6]/20 dark:border-[#3a2f2b]/40 text-center">
         <p class="font-body text-[#54433a]/60 dark:text-[#a89388]/50 text-sm">
           <span id="togglePrompt">Don't have an account?</span>
-          <!-- FIX: Explicit paths to auth.html; text is clear Login/Register -->
           <button id="toggleModeBtn" class="ml-2 font-bold text-[#8c4f10] dark:text-[#ffb77b] hover:underline underline-offset-4 transition-all text-sm">
             Register
           </button>
@@ -366,7 +355,7 @@
 
   // ── State ───────────────────────────────────────────────────────────────────
   let isLoginMode = true;
-  let selectedRole = 'Artisan'; // 'Artisan' or 'Admin'
+  let selectedRole = 'Artisan';
 
   // ── Role Selection ──────────────────────────────────────────────────────────
   function selectRole(role) {
@@ -379,27 +368,21 @@
   function setMode(loginMode) {
     isLoginMode = loginMode;
 
-    // Heading & subheading
     document.getElementById('formHeading').textContent    = loginMode ? 'Sign In' : 'Create Account';
     document.getElementById('formSubheading').textContent = loginMode
       ? 'Enter your credentials to access your workbench.'
       : 'Register a new account to join the atelier.';
 
-    // Show/hide fields
     document.getElementById('nameFieldWrapper').classList.toggle('hidden', loginMode);
     document.getElementById('artisan-name').required = !loginMode;
     document.getElementById('confirmPasswordWrapper').classList.toggle('hidden', loginMode);
     document.getElementById('confirm-password').required = !loginMode;
     document.getElementById('loginExtras').classList.toggle('hidden', !loginMode);
 
-    // Submit button text
     document.getElementById('submitBtn').textContent = loginMode ? 'Sign In' : 'Register';
-
-    // Toggle prompt
-    document.getElementById('togglePrompt').textContent = loginMode ? "Don't have an account?" : 'Already have an account?';
+    document.getElementById('togglePrompt').textContent  = loginMode ? "Don't have an account?" : 'Already have an account?';
     document.getElementById('toggleModeBtn').textContent = loginMode ? 'Register' : 'Login';
 
-    // Clear errors
     const err = document.getElementById('authError');
     err.classList.add('hidden');
     err.textContent = '';
@@ -419,7 +402,6 @@
     errEl.classList.add('hidden');
     errEl.textContent = '';
 
-    // Register: validate confirm password
     if (!isLoginMode) {
       const name    = document.getElementById('artisan-name').value.trim();
       const confirm = document.getElementById('confirm-password').value;
@@ -450,16 +432,11 @@
         res = await window.api.login(email, password);
       } else {
         const name = document.getElementById('artisan-name').value.trim();
-        // FIX: Pass the selected role ('Admin' or 'Artisan') to the register API
         res = await window.api.register(name, email, password, selectedRole);
       }
 
-      // Persist token + user (includes role from API response)
       localStorage.setItem('leathercraft_token', res.token);
       localStorage.setItem('leathercraft_user', JSON.stringify(res));
-
-      // Redirect to dashboard
-      // FIX: Correct relative path from pages/ back to root index
       window.location.href = '../index.html';
 
     } catch (err) {
