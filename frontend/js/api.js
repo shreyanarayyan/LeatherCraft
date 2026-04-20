@@ -3,7 +3,7 @@ const API_BASE_URL =
   localStorage.getItem('leathercraft_api_base_url') ||
   ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:5001/api'
-    : '/api');
+    : 'https://leathercraft-yzia.onrender.com/api');
 
 const fetchAPI = async (endpoint, options = {}) => {
   const token = localStorage.getItem('leathercraft_token');
